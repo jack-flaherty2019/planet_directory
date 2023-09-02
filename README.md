@@ -1,12 +1,27 @@
 # Running the Planet Directory
 
-### `npm start`
+To use the react app, get a copy from the git repository using:
+'git clone'
+
+Copy the SSH and the commanded entered should be similar to this:
+
+## `git clone git@github.com:jack-flaherty2019/planet_directory.git`
+
+After getting into the project directory using `cd`, run the following command to install all dependencies:
+
+## `npm install`
+
+The app can then be run using the following command:
+
+## `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
+
+### Other pieces of information
 
 Data is from Star Wars API:
 [https://swapi.dev/]
