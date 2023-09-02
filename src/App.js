@@ -10,6 +10,7 @@ function App() {
   // The data for planets and people are stored in these variables
   const [planets, setPlanets] = useState([]);
   const [people, setPeople] = useState([]);
+  const [selectedPlanet, setSelectedPlanet] = useState();
 
   // When a user goes to another page of the list of residents
   // These variables will updates
@@ -59,14 +60,15 @@ function App() {
 
   // This function will store the value of which planet is selected
   // from the dropdown menu
-  const [selectedPlanet, setSelectedPlanet] = useState();
   function handleSelect(event) {
     setSelectedPlanet(event.value);
   }
   /*
   The data for planets and people are not loaded instantly. To prevent the code from 
   crashing, an if-else statement is used to control when the dropdown menu is
-  displayed. After a planet is selected, the list of residents will then be displayed.
+  displayed. The planet data will load before the people data, so the menu
+  will not appear until the people data is loaded. 
+  After a planet is selected, the list of residents will then be displayed.
 
   */
   return (
@@ -87,7 +89,6 @@ function App() {
                 <Select 
                   options={planets.map((val, key) => ({ label: val.name, value: key}))}
                   placeholder='Select Planet'
-                  value={selectedPlanet}
                   onChange={handleSelect}
                   defaultMenuIsOpen={true}
                 />
@@ -107,7 +108,7 @@ function App() {
           if (typeof selectedPlanet != typeof undefined) {
             return (
               <div>
-                <div>
+                <div>                 
                   <Records data={planets[selectedPlanet].residents.slice(indexOfFirstRecord, indexOfLastRecord)}
                           people={people}/>
                 </div>

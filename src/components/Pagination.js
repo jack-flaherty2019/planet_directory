@@ -16,7 +16,8 @@ const Pagination = ({ nPages, currentPage, setCurrentPage, residents }) => {
     }
 
     //The component will return a set of buttons that allow for pagination
-    //to each page of the list of residents for a certain planet
+    //to each page of the list of residents for a certain planet.
+    //If there are no residents, the buttons will not be displayed.
     if (residents.length === 0) {
         return (
             <p></p>
@@ -26,7 +27,7 @@ const Pagination = ({ nPages, currentPage, setCurrentPage, residents }) => {
             <nav>
                 <ul className='pagination justify-content-center'>
                     <li className="page-item">
-                        <button style={{backgroundColor: "darkgray"}} className="page-link" onClick={prevPage}> Previous</button>
+                        <button style={{backgroundColor: 'darkgray'}} className="page-link" onClick={prevPage}> Previous</button>
                     </li>
                 
                     {pageNumbers.map(pgNumber => (

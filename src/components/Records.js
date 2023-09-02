@@ -17,7 +17,9 @@ const Records = ({data, people}) => {
       }
 
     //The component returns a table that will loop through each value
-    //in the resident array and display each entry with their name
+    //in the resident array and display each entry with their name.
+    //If there are no residents, a message is displayed saying that the user 
+    //Needs to select another planet.
     if (data.length === 0) {
         return (
             <p style={{color: "yellow"}}>Error: No resident data, try another planet!</p>
