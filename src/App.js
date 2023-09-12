@@ -7,10 +7,12 @@ import Records from './components/Records';
 
 function App() {
 
-  // The data for planets and people are stored in these variables
+  // The data for planets, the names of residents on a planet,
+  // the initial url, and a loading variable are stored here
   const [planets, setPlanets] = useState([]);
-  const [people, setPeople] = useState([]);
-  const [selectedPlanet, setSelectedPlanet] = useState();
+  const [url, setUrl] = useState("https://swapi.dev/api/planets/");
+  const [isLoading, setLoading] = useState(true);
+  const [residentNames, setResidentNames] = useState([]);
 
   // When a user goes to another page of the list of residents
   // These variables will updates
@@ -19,55 +21,50 @@ function App() {
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
 
+
   // The useEffect function runs as soon as the server starts
   useEffect(() => {
-    // The data for planets and people are stored across multiple pages
+    // The data for planets is stored across multiple pages
     // The data is fetched from the API and then appended 
-    // to the respective array until all data is gathered from each page.
+    // to the respective array once all data is gathered from each page.
     async function fetchPlanets() { 
-      let url = "https://swapi.dev/api/planets/";
       let res = await fetch(url);
       let temp = await res.json();
-      let data = temp.results;
-      url = temp.next;
-      while (url != null) {
-        res = await fetch(url);
-        temp = await res.json();
-        data = data.concat(temp.results);
-        url = temp.next;
-      }
-      setPlanets(data);
+      setUrl(temp.next);
+      setPlanets(planets.concat(temp.results));
     }
-
-    async function fetchPeople() { 
-      let url = "https://swapi.dev/api/people/";
-      let res = await fetch(url);
-      let temp = await res.json();
-      let data = temp.results;
-      url = temp.next;
-      while (url != null) {
-        res = await fetch(url);
-        temp = await res.json();
-        data = data.concat(temp.results);
-        url = temp.next;
-      }
-      setPeople(data);
-    }
-
-    fetchPeople();
     fetchPlanets();
-  }, []);
+    // eslint-disable-next-line
+  }, [planets]);
+
+  async function getResidentNames(planet) { 
+    setResidentNames(await fetchPeople(planet.residents));
+    setLoading(false);
+  }
+
+  async function fetchPeople(residents) { 
+    if (residents.length > 0) {
+      let i = 0;
+      while (i < residents.length) {
+        let res = await fetch(residents[i]);
+        let temp = await res.json();
+        residents[i] = temp.name;
+        i++;
+      }
+    }
+    return residents;
+  }
 
   // This function will store the value of which planet is selected
   // from the dropdown menu
   function handleSelect(event) {
-    setSelectedPlanet(event.value);
+    setLoading(true);
+    getResidentNames(planets[event.value]);
   }
   /*
-  The data for planets and people are not loaded instantly. To prevent the code from 
+  The data for planets is not loaded instantly. To prevent the code from 
   crashing, an if-else statement is used to control when the dropdown menu is
-  displayed. The planet data will load before the people data, so the menu
-  will not appear until the people data is loaded. 
+  displayed.
   After a planet is selected, the list of residents will then be displayed.
 
   */
@@ -83,7 +80,7 @@ function App() {
 
       <div>
         {(() => {
-          if (typeof people[0] != typeof undefined) {
+          if (typeof planets[0] != typeof undefined) {
             return (
               <div>
                 <Select 
@@ -105,19 +102,18 @@ function App() {
 
       <div>
         {(() => {
-          if (typeof selectedPlanet != typeof undefined) {
+          if (!isLoading) {
             return (
               <div>
                 <div>                 
-                  <Records data={planets[selectedPlanet].residents.slice(indexOfFirstRecord, indexOfLastRecord)}
-                          people={people}/>
+                  <Records data={residentNames.slice(indexOfFirstRecord, indexOfLastRecord)}/>
                 </div>
                   <div>
                   <Pagination
-                    nPages = { Math.ceil(planets[selectedPlanet].residents.length / recordsPerPage) }
+                    nPages = { Math.ceil(residentNames.length / recordsPerPage) }
                     currentPage = { currentPage }
                     setCurrentPage = { setCurrentPage }
-                    residents = {planets[selectedPlanet].residents}
+                    residents = {residentNames}
                   />
                 </div>
               </div>

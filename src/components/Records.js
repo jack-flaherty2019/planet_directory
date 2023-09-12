@@ -1,7 +1,8 @@
 import React from "react";
 
-const Records = ({data, people}) => {
+const Records = ({data}) => {
 
+    /*
     //This function takes the url for each resident and returns their
     //name to be displayed in the list
     function displayResidents(resident) {
@@ -15,6 +16,7 @@ const Records = ({data, people}) => {
         id < 17 ? id-- : id = id - 2;
         return (people[id].name);
       }
+    */
 
     //The component returns a table that will loop through each value
     //in the resident array and display each entry with their name.
@@ -35,7 +37,7 @@ const Records = ({data, people}) => {
                 <tbody>
                     {data.map((val, key) => 
                         <tr key={key}>
-                            <td style={{color: "white"}}>{displayResidents(val)}</td>
+                            <td style={{color: "white"}}>{val}</td>
                         </tr>
                     )}
                 </tbody>
