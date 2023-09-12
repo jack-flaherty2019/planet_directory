@@ -25,8 +25,10 @@ function App() {
   // The useEffect function runs as soon as the server starts
   useEffect(() => {
     // The data for planets is stored across multiple pages
-    // The data is fetched from the API and then appended 
-    // to the respective array once all data is gathered from each page.
+    // The data is fetched from the first page, then added to planet variable
+    // so that it can start displaying part of the full list.
+    // The rest of the pages will continue to be fetched and added to the 
+    // already existing list.
     async function fetchPlanets() { 
       let res = await fetch(url);
       let temp = await res.json();
@@ -37,11 +39,15 @@ function App() {
     // eslint-disable-next-line
   }, [planets]);
 
+  // Once a planet has been selected, the resident array is sent to get the data
+  // for each url within it.
+  // After the data is returned, loading is set to false that it can be displayed
   async function getResidentNames(planet) { 
     setResidentNames(await fetchPeople(planet.residents));
     setLoading(false);
   }
 
+  // If a resident array has no entries, the empty array will be returned.
   async function fetchPeople(residents) { 
     if (residents.length > 0) {
       let i = 0;
@@ -69,8 +75,7 @@ function App() {
 
   */
   return (
-    <div className='container mt=5' 
-          >
+    <div className='container mt=5' >
 
       <div style={{color: 'yellow'}}>
         <h1>Star Wars Planet Directory</h1>
@@ -125,6 +130,7 @@ function App() {
           }  
         })()}
       </div>
+      
     </div>
   )
 }
