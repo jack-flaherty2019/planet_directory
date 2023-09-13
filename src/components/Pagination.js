@@ -1,6 +1,6 @@
 import React from "react";
 
-const Pagination = ({ nPages, currentPage, setCurrentPage, residents }) => {
+const Pagination = ({ nPages, currentPage, setCurrentPage, nPeople}) => {
 
     //This creates an array of numbers that go up to the number of residents
     // for the selected planet
@@ -18,7 +18,7 @@ const Pagination = ({ nPages, currentPage, setCurrentPage, residents }) => {
     //The component will return a set of buttons that allow for pagination
     //to each page of the list of residents for a certain planet.
     //If there are no residents, the buttons will not be displayed.
-    if (residents.length === 0) {
+    if (nPeople.length === 0) {
         return (
             <p></p>
         )
